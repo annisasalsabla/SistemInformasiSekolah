@@ -6,5 +6,8 @@
     <color name="colorAccent">#FF4081</color> <!-- Accent color -->
     <color name="orange">#F4CA58</color>
     <color name="orange2">#E85322</color>
-    <color name="hijau">#42FF3B</color>
+    <color name="orange_dark">#F57C00</color>
+    <color name="hijau">#4CAF50</color>
+    <color name="hijau_dark">#388E3C</color>
+
 </resources>

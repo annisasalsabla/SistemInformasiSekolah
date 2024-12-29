@@ -1,14 +1,20 @@
 package com.annisa.sisteminformasisekolah.api
 
 import com.annisa.sekolah.models.SekolahResponse
+import com.annisa.sekolah.models.TambahSekolahResponse
+import com.annisa.sisteminformasisekolah.models.DeleteSekolahResponse
 import com.annisa.sisteminformasisekolah.models.RegisterResponse
 import com.annisa.sisteminformasisekolah.models.LoginResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface ApiService {
@@ -37,5 +43,20 @@ interface ApiService {
 
     // Optional: Endpoint untuk Mendapatkan Detail Sekolah Berdasarkan ID
     @GET("API_SEKOLAH/get_sekolah.php")
-    fun getDetailSekolah(@Query("id") id: Int): Call<SekolahResponse>
+    fun getDetailSekolah(@Query("id") id: String): Call<SekolahResponse>  // Change id to String
+
+    @Multipart
+    @POST("API_SEKOLAH/add_sekolah.php")
+    fun addSekolah(
+        @Part("namaSekolah") namaSekolah: RequestBody,
+        @Part("noTelepon") noTelepon: RequestBody,
+        @Part("akreditasi") akreditasi: RequestBody,
+        @Part("informasi") informasi: RequestBody,
+        @Part fileGambar: MultipartBody.Part
+    ): Call<TambahSekolahResponse>
+
+    @FormUrlEncoded
+    @POST("API_SEKOLAH/delete_sekolah.php")
+    fun deleteSekolah(@Field("id") id: String): Call<DeleteSekolahResponse>  // Change id to String
+
 }

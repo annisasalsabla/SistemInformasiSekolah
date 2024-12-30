@@ -15,6 +15,7 @@ import com.annisa.sekolah.SekolahAdapter
 import com.annisa.sekolah.models.SekolahResponse
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.annisa.sisteminformasisekolah.api.ApiClient
+import com.annisa.sisteminformasisekolah.models.DeleteSekolahResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -102,6 +103,25 @@ class DashboardActivity : AppCompatActivity() {
 
     // Callback for delete action
     private fun onDeleteSekolah(sekolahId: Int) {
-        fetchSchools("") // Refresh the list of schools after deletion
+        deleteSekolah(sekolahId)
+    }
+
+    // Function to handle deletion of a school
+    private fun deleteSekolah(sekolahId: Int) {
+        ApiClient.apiService.deleteSekolah(sekolahId.toString()).enqueue(object : Callback<DeleteSekolahResponse> {
+            override fun onResponse(call: Call<DeleteSekolahResponse>, response: Response<DeleteSekolahResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    // Notify user and refresh the list after successful deletion
+                    Toast.makeText(this@DashboardActivity, "Sekolah berhasil di hapus", Toast.LENGTH_SHORT).show()
+                    fetchSchools("") // Refresh the list of schools
+                } else {
+                    Toast.makeText(this@DashboardActivity, "Gagal mengahapus sekolah", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteSekolahResponse>, t: Throwable) {
+                Toast.makeText(this@DashboardActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

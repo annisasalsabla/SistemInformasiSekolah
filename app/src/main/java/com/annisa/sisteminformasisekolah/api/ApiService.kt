@@ -3,12 +3,13 @@ package com.annisa.sisteminformasisekolah.api
 import com.annisa.sekolah.models.SekolahResponse
 import com.annisa.sekolah.models.TambahSekolahResponse
 import com.annisa.sisteminformasisekolah.models.DeleteSekolahResponse
-import com.annisa.sisteminformasisekolah.models.RegisterResponse
+import com.annisa.sisteminformasisekolah.models.EditSekolahResponse
 import com.annisa.sisteminformasisekolah.models.LoginResponse
+import com.annisa.sisteminformasisekolah.models.RegisterResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -26,7 +27,7 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("fullname") fullname: String,
-        @Field("email") email: String,
+        @Field("email") email: String
     ): Call<RegisterResponse>
 
     // Endpoint untuk Login
@@ -34,7 +35,7 @@ interface ApiService {
     @POST("API_SEKOLAH/login.php")
     fun login(
         @Field("username") username: String,
-        @Field("password") password: String,
+        @Field("password") password: String
     ): Call<LoginResponse>
 
     // Endpoint untuk Mendapatkan Data Sekolah (Semua data atau berdasarkan nama sekolah)
@@ -43,8 +44,9 @@ interface ApiService {
 
     // Optional: Endpoint untuk Mendapatkan Detail Sekolah Berdasarkan ID
     @GET("API_SEKOLAH/get_sekolah.php")
-    fun getDetailSekolah(@Query("id") id: String): Call<SekolahResponse>  // Change id to String
+    fun getDetailSekolah(@Query("id") id: String): Call<SekolahResponse>
 
+    // Endpoint untuk Menambahkan Sekolah Baru dengan Gambar
     @Multipart
     @POST("API_SEKOLAH/add_sekolah.php")
     fun addSekolah(
@@ -55,8 +57,20 @@ interface ApiService {
         @Part fileGambar: MultipartBody.Part
     ): Call<TambahSekolahResponse>
 
+    // Endpoint untuk Menghapus Sekolah Berdasarkan ID
     @FormUrlEncoded
     @POST("API_SEKOLAH/delete_sekolah.php")
-    fun deleteSekolah(@Field("id") id: String): Call<DeleteSekolahResponse>  // Change id to String
+    fun deleteSekolah(@Field("id") id: String): Call<DeleteSekolahResponse>
+
+    @Multipart
+    @POST("API_SEKOLAH/edit_sekolah.php")
+    fun updateSekolah(
+        @Part("idSekolah") idSekolah: RequestBody?,
+        @Part("namaSekolah") namaSekolah: RequestBody?,
+        @Part("noTelepon") noTelepon: RequestBody?,
+        @Part("akreditasi") akreditasi: RequestBody?,
+        @Part("informasi") informasi: RequestBody?,
+        @Part fileGambar: MultipartBody.Part?
+    ): Call<ResponseBody>?
 
 }
